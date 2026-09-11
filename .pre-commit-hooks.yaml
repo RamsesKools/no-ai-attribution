@@ -1,0 +1,6 @@
+- id: no-ai-attribution
+  name: no AI attribution in commit message
+  description: Rejects AI credits (Co-authored-by, "generated with", robot emoji) in commit messages.
+  entry: no-ai-attribution
+  language: python
+  stages: [commit-msg]

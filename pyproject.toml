@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "no-ai-attribution"
+version = "0.1.0"
+description = "pre-commit hook that rejects AI attribution in git commit messages"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Ramses Kools" }]
+requires-python = ">=3.9"
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+]
+
+[project.urls]
+Homepage = "https://github.com/RamsesKools/no-ai-attribution"
+
+[project.scripts]
+no-ai-attribution = "no_ai_attribution.main:main"
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

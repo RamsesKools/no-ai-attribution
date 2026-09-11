@@ -1,0 +1,42 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e '.[test]'
+      - run: pytest
+
+  hook:
+    # Runs the hook the way a consumer does, through pre-commit itself.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install pre-commit
+      - name: reject an AI-attributed message
+        run: |
+          echo 'Fix x
+
+          Co-authored-by: Claude <noreply@anthropic.com>' > msg.txt
+          ! pre-commit try-repo . no-ai-attribution \
+              --hook-stage commit-msg --commit-msg-filename msg.txt
+      - name: accept a clean message
+        run: |
+          echo 'Fix x' > msg.txt
+          pre-commit try-repo . no-ai-attribution \
+              --hook-stage commit-msg --commit-msg-filename msg.txt
