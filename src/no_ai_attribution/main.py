@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import argparse
 import re
-from typing import Iterable, Optional, Pattern, Sequence
+from collections.abc import Iterable, Sequence
+from re import Pattern
 
 AI_TOOLS = (
     "claude",
@@ -52,9 +53,13 @@ PATTERNS = (
     # Trailer crediting an AI tool: "Co-authored-by: Claude <...>".
     re.compile(rf"^\s*(?:{'|'.join(ATTRIBUTION_TRAILERS)})\s*:.*(?:{_AI})", re.IGNORECASE),
     # Prose credit: "generated with Claude Code", "written by ChatGPT".
-    re.compile(rf"(?:{'|'.join(ATTRIBUTION_VERBS)})\s+(?:with|by|using)\s+\W*(?:{_AI})", re.IGNORECASE),
+    re.compile(
+        rf"(?:{'|'.join(ATTRIBUTION_VERBS)})\s+(?:with|by|using)\s+\W*(?:{_AI})", re.IGNORECASE
+    ),
     # Addresses used by AI committers.
-    re.compile(r"noreply@anthropic\.com|@openai\.com|\[bot\]@users\.noreply\.github\.com", re.IGNORECASE),
+    re.compile(
+        r"noreply@anthropic\.com|@openai\.com|\[bot\]@users\.noreply\.github\.com", re.IGNORECASE
+    ),
     # The robot emoji, which several tools sign off with.
     re.compile("\N{ROBOT FACE}"),
 )
@@ -84,7 +89,7 @@ def find_violations(
     ]
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "filenames",
