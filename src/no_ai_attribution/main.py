@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Reject AI attribution in git commit messages."""
 
 from __future__ import annotations

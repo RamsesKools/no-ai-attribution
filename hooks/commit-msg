@@ -1,0 +1,17 @@
+#!/bin/sh
+# commit-msg hook that runs no-ai-attribution, then hands over to the repo's own hook.
+#
+# core.hooksPath replaces .git/hooks instead of adding to it, so a machine-wide
+# hook has to call the repo-local one itself or pre-commit stops running.
+set -e
+
+: "${NO_AI_ATTRIBUTION:=no-ai-attribution}"
+"$NO_AI_ATTRIBUTION" "$1"
+
+hook_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+repo_hook_dir=$(CDPATH= cd -- "$(git rev-parse --git-common-dir)/hooks" 2>/dev/null && pwd -P) || exit 0
+
+# Skip the handover when this script *is* the repo hook, or it would exec itself.
+if [ "$hook_dir" != "$repo_hook_dir" ] && [ -x "$repo_hook_dir/commit-msg" ]; then
+    exec "$repo_hook_dir/commit-msg" "$@"
+fi
