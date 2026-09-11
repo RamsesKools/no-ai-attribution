@@ -101,3 +101,16 @@ def test_main_checks_every_file(tmp_path):
     dirty = tmp_path / "dirty"
     dirty.write_text("\N{ROBOT FACE} Generated with Claude Code\n", encoding="utf-8")
     assert main([str(clean), str(dirty)]) == 1
+
+
+def test_allow_patterns_exempt_a_line():
+    message = "Fix parser\n\nCo-authored-by: Ai Nguyen <ai@example.com>"
+    assert find_violations(message)
+    assert find_violations(message, allow_patterns=[re.compile("ai nguyen", re.IGNORECASE)]) == []
+
+
+def test_main_takes_allow_patterns_from_the_command_line(tmp_path):
+    path = tmp_path / "COMMIT_EDITMSG"
+    path.write_text("Fix x\n\nCo-authored-by: Ai Nguyen <ai@example.com>\n", encoding="utf-8")
+    assert main([str(path)]) == 1
+    assert main(["--allow-pattern", "ai nguyen", str(path)]) == 0

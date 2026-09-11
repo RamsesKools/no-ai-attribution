@@ -80,12 +80,15 @@ def visible_lines(text: str) -> list[str]:
 def find_violations(
     text: str,
     extra_patterns: Iterable[Pattern[str]] = (),
+    allow_patterns: Iterable[Pattern[str]] = (),
 ) -> list[tuple[int, str]]:
     patterns = (*PATTERNS, *extra_patterns)
+    allowed = tuple(allow_patterns)
     return [
         (number, line)
         for number, line in enumerate(visible_lines(text), start=1)
         if any(pattern.search(line) for pattern in patterns)
+        and not any(pattern.search(line) for pattern in allowed)
     ]
 
 
@@ -103,14 +106,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         metavar="REGEX",
         help="additional case-insensitive regex to reject; repeatable",
     )
+    parser.add_argument(
+        "--allow-pattern",
+        action="append",
+        default=[],
+        metavar="REGEX",
+        help="case-insensitive regex exempting a line from every check; repeatable",
+    )
     args = parser.parse_args(argv)
 
     extra_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in args.extra_pattern]
+    allow_patterns = [re.compile(pattern, re.IGNORECASE) for pattern in args.allow_pattern]
 
     returncode = 0
     for filename in args.filenames:
         with open(filename, encoding="utf-8") as handle:
-            violations = find_violations(handle.read(), extra_patterns)
+            violations = find_violations(handle.read(), extra_patterns, allow_patterns)
         if violations:
             returncode = 1
             print(f"{filename}: AI attribution is not allowed in commit messages.")
