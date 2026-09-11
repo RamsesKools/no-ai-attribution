@@ -120,7 +120,7 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     returncode = 0
     for filename in args.filenames:
-        with open(filename, encoding="utf-8") as handle:
+        with open(filename, encoding="utf-8", errors="replace") as handle:
             violations = find_violations(handle.read(), extra_patterns, allow_patterns)
         if violations:
             returncode = 1

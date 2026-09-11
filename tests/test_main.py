@@ -114,3 +114,9 @@ def test_main_takes_allow_patterns_from_the_command_line(tmp_path):
     path.write_text("Fix x\n\nCo-authored-by: Ai Nguyen <ai@example.com>\n", encoding="utf-8")
     assert main([str(path)]) == 1
     assert main(["--allow-pattern", "ai nguyen", str(path)]) == 0
+
+
+def test_main_tolerates_a_message_that_is_not_utf8(tmp_path):
+    path = tmp_path / "COMMIT_EDITMSG"
+    path.write_bytes("Fix caf\N{LATIN SMALL LETTER E WITH ACUTE} parser\n".encode("latin-1"))
+    assert main([str(path)]) == 0
