@@ -5,6 +5,18 @@ A [pre-commit](https://pre-commit.com/) hook that rejects AI attribution in git 
 Coding agents like to sign their work: `Co-Authored-By: Claude`, `🤖 Generated with [Claude Code]`, `Assisted-by: Codex`.
 If you would rather your history not carry that, this hook blocks the commit and tells you which line to remove.
 
+## Why
+
+AI agents are tools, not authors.
+My compiler, IDE, linter and formatter never get a `Co-authored-by:` line, and neither should the agent.
+
+Not every agent vendor shares that view.
+Several of them ship override instructions telling the agent to sign its commits regardless of what your `AGENTS.md` or `CLAUDE.md` asks for, so "do not add attribution" quietly loses to the system prompt.
+
+The lesson generalises: when you want to force agent behaviour, do not rely on instructions in a markdown file.
+Put a guardrail in the environment it works in.
+A hook that fails the commit is not something an agent can talk itself out of.
+
 ## Usage
 
 Add it to `.pre-commit-config.yaml`:

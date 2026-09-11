@@ -12,6 +12,6 @@ repos:
     hooks:
       - id: no-ai-attribution
         name: no AI attribution in commit message
-        entry: python -m no_ai_attribution.main
+        entry: python3 src/no_ai_attribution/main.py
         language: system
         stages: [commit-msg]
