@@ -27,13 +27,17 @@ AI_TOOLS = (
     r"\bllm\b",
 )
 
+# agent-logs-url and claude-session credit nobody, but only an agent writes them.
 ATTRIBUTION_TRAILERS = (
     "co-?authored-by",
+    "agent-logs-url",
     "assisted-by",
     "authored-by",
+    "claude-session",
     "created-by",
     "generated-by",
     "helped-by",
+    "made-with",
     "written-by",
 )
 

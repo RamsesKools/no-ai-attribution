@@ -20,9 +20,10 @@ Run `uv lock` after touching dependencies and commit the lockfile.
 ## What lives where
 
 - [src/no_ai_attribution/main.py](src/no_ai_attribution/main.py): the entire checker, standard library only.
-- [tests/test_main.py](tests/test_main.py): the message corpus, one list of messages that must fail and one that must pass.
+- [tests/test_main.py](tests/test_main.py): the message corpus. `BLOCKED` and `ALLOWED` are hand written shapes, `TOOL_SIGNATURES` holds verbatim lines real agents write.
 - [hooks/commit-msg](hooks/commit-msg): the machine-wide git hook, tested by [tests/test_global_hook.sh](tests/test_global_hook.sh).
 - [.pre-commit-hooks.yaml](.pre-commit-hooks.yaml): what consumers get when they add this repo to their config.
+- [docs/attribution-by-tool.md](docs/attribution-by-tool.md): what each agent writes and how to disable it, the source for the corpus.
 
 ## Changing what the hook catches
 

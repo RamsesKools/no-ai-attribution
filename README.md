@@ -82,6 +82,8 @@ Comment lines and the verbose diff below git's scissors line are ignored, so a d
 
 Mentioning an AI tool in a normal message is fine: `Document the claude/CLAUDE.md sync script` passes, only the crediting patterns fail.
 
+[docs/attribution-by-tool.md](docs/attribution-by-tool.md) lists what each agent actually writes, and how to switch it off at the source for the few tools that let you.
+
 ## Configuration
 
 Both flags take case-insensitive regexes and can be repeated.
