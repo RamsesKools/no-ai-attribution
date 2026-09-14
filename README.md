@@ -45,7 +45,9 @@ pre-commit builds the hook its own virtualenv, and the hook needs nothing beyond
 ### In every repo on your machine
 
 pre-commit is per repo, and an agent can always work in a repo that does not have it.
-To cover everything, install the checker once and point git's global `core.hooksPath` at [hooks/commit-msg](hooks/commit-msg):
+For a complete device-wide setup, see [Install the hook globally](docs/global-install.md).
+
+The global hooks path setup is:
 
 ```sh
 uv tool install git+https://github.com/RamsesKools/no-ai-attribution
@@ -59,7 +61,7 @@ git config --global core.hooksPath ~/.config/git/hooks
 Use `pipx install git+https://github.com/RamsesKools/no-ai-attribution` if you prefer pipx over uv.
 
 `core.hooksPath` replaces `.git/hooks` instead of adding to it, so the script hands over to the repo's own `commit-msg` hook when there is one.
-Repos that use pre-commit keep working.
+Repos with pre-commit hooks already installed keep working; see the global installation guide before running `pre-commit install` in another repository.
 
 Two things worth knowing:
 
